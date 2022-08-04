@@ -48,7 +48,7 @@ def main():
             # dynaudnorm is a dynamic audio normalizer.
             # http://underpop.online.fr/f/ffmpeg/help/dynaudnorm.htm.gz
             # Dynamic Audio Normalizer will "even out" quiet and loud sections
-            cmd += "-af \"dynaudnorm, silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-60dB\" "
+            cmd += "-af \"dynaudnorm, silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
             cmd += f"-ar {args.sr} -ac 1 {path.join(out_dir, out_name)}"
 
             system(cmd)
