@@ -22,7 +22,8 @@ def main():
                         default=600,
                         help="length (in second) of target audio")
     parser.add_argument("--augment", default=False, action="store_true")
-    parser.add_argument("--dynaudnorm", default=False, help="dynamic audio normalization")
+    parser.add_argument("--dynaudnorm", default=False, help="dynamic audio normalization. Default is false.")
+    parser.add_argument("--stopthreshold", default="-60", help="gate threshold in dB. Default is -60.")
     
     args = parser.parse_args()
 
@@ -54,9 +55,9 @@ def main():
             # cmd += "-af \"silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
             if (args.dynaudnorm):
                 print(args.dynaudnorm)
-                cmd += "-af \"dynaudnorm, silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
+                cmd += "-af \"dynaudnorm, silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=" + f"{args.stopthreshold}" + "dB\" " 
             else: 
-                cmd += "-af \"silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
+                cmd += "-af \"silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=" + f"{args.stopthreshold}" + "dB\" " 
             cmd += f"-ar {args.sr} -ac 1 {path.join(out_dir, out_name)}"
             print(cmd)
             system(cmd)
