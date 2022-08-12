@@ -22,7 +22,8 @@ def main():
                         default=600,
                         help="length (in second) of target audio")
     parser.add_argument("--augment", default=False, action="store_true")
-
+    parser.add_argument("--dynaudnorm", default=False, help="dynamic audio normalization")
+    
     args = parser.parse_args()
 
     out_dir = path.join(args.output, f"out_{args.sr}")
@@ -50,9 +51,14 @@ def main():
             # Dynamic Audio Normalizer will "even out" quiet and loud sections
             # cmd += "-af \"dynaudnorm, silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
             # Removing dynamic audio normalization
-            cmd += "-af \"silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
+            # cmd += "-af \"silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
+            if (args.dynaudnorm):
+                print(args.dynaudnorm)
+                cmd += "-af \"dynaudnorm, silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
+            else: 
+                cmd += "-af \"silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-30dB\" "
             cmd += f"-ar {args.sr} -ac 1 {path.join(out_dir, out_name)}"
-
+            print(cmd)
             system(cmd)
 
     except KeyboardInterrupt:
