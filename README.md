@@ -1,4 +1,5 @@
 # UDLS
+Set of scripts for sound processing and data augmentation.
 
 To install 
 
